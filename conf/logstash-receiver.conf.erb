@@ -7,6 +7,6 @@ redis { host => "<%= ENV['OPENSHIFT_REDIS_HOST']%>"
         codec => "json" }
 }
 output {
-  file { path => "<%= ENV['OPENSHIFT_TMP_DIR']%>/%{+YYYY-MM-dd}.txt" }
-  websocket { host => "<%= ENV['OPENSHIFT_GEAR_DNS']%>" port => "<%= ENV['OPENSHIFT_LOGSTASH_WS_PORT']%>" }
+  file { path => "<%= ENV['OPENSHIFT_TMP_DIR']%>/logstash.%{+YYYY-MM-dd}.txt" }
+  websocket { host => "<%= ENV['OPENSHIFT_LOGSTASH_WS_IP']%>" port => "<%= ENV['OPENSHIFT_LOGSTASH_WS_PORT']%>" }
 }
