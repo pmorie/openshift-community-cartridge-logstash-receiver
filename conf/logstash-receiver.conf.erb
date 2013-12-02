@@ -3,10 +3,21 @@ redis { host => "<%= ENV['OPENSHIFT_REDIS_HOST']%>"
         port => "<%= ENV['OPENSHIFT_REDIS_PORT']%>"
         password => "<%= ENV['OPENSHIFT_REDIS_PASSWORD']%>"
         data_type => "list"
-        key => "logstash"
+        key => "osemetrics"
         codec => "json" }
 }
 output {
-  file { path => "<%= ENV['OPENSHIFT_TMP_DIR']%>/logstash.%{+YYYY-MM-dd}.txt" }
-  elasticsearch { host => "<%= ENV['OPENSHIFT_ELASTICSEARCH_HOST']%>" port => "<%= ENV['OPENSHIFT_ELASTICSEARCH_PORT']%>" }
+  file { path => "<%= ENV['OPENSHIFT_TMP_DIR']%>/%{+YYYY-MM-dd}_logstash.txt" }
+  elasticsearch { host => "<%= ENV['OPENSHIFT_ELASTICSEARCH_HOST']%>" port => "<%= ENV['OPENSHIFT_ELASTICSEARCH_PORT']%>" codec => "json" }
+}
+
+input {
+redis { host => "<%= ENV['OPENSHIFT_REDIS_HOST']%>"
+        port => "<%= ENV['OPENSHIFT_REDIS_PORT']%>"
+        password => "<%= ENV['OPENSHIFT_REDIS_PASSWORD']%>"
+        data_type => "list"
+        key => "oselogs" }
+}
+output {
+  elasticsearch { host => "<%= ENV['OPENSHIFT_ELASTICSEARCH_HOST']%>" port => "<%= ENV['OPENSHIFT_ELASTICSEARCH_PORT']%>" codec => "json" }
 }
